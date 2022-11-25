@@ -37,9 +37,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Language::class, inversedBy: 'users')]
     private Collection $languages;
 
+    #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'friends')]
+    private Collection $friends;
+
     public function __construct()
     {
         $this->languages = new ArrayCollection();
+        $this->friends = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -147,6 +151,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->languages->removeElement($language)) {
             $language->removeUser($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getFriends(): Collection
+    {
+        return $this->friends;
+    }
+
+    public function addFriend(self $friend): self
+    {
+        if (!$this->friends->contains($friend)) {
+            $this->friends->add($friend);
+        }
+
+        return $this;
+    }
+
+    public function removeFriend(self $friend): self
+    {
+        $this->friends->removeElement($friend);
 
         return $this;
     }

@@ -66,7 +66,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function orderByLanguage($language): array
     {
         return $this->createQueryBuilder('u')
-            ->andWhere('u.languages.id LIKE :language')
+            ->select('u')
+            ->innerJoin('u.languages','l','WITH','l. = :language')
+            ->where('l.id = :language')
             ->setParameter('language','%'.$language.'%')
             ->getQuery()
             ->getResult();

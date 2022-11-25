@@ -17,7 +17,11 @@
                 <td>{% for language in u.languages %}
                         {{ language }}
                     {% endfor %}</td>
-                <td>Add</td>
+                {% if app.user.friends.contains(u) %}
+                    <td> <a href="{{ path('app_removefriend',{'user':u.id,'me':app.user.id}) }}">Retirer</a></td>
+                {% else %}
+                    <td> <a href="{{ path('app_addfriend',{'user':u.id ,'me':app.user.id}) }}">Ajouter</a></td>
+                {% endif %}
                 <td>Message</td>
             </tr>
         {% endfor %}
