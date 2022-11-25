@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+    <div>
+        Filtrer par langage :
+        {% for language in languages %}
+           <a href="{{ path('app_filtrer' ,{'languageID': language.id}) }}">{{ language }}</a>
+        {% endfor %}
+    </div>
+    <div>{{ nbUser }} développeurs en base de données.</div>
+    <table>
+        {% for u in users %}
+            <tr>
+                <td>{{ u.pseudo }}</td>
+                <td>{% for language in u.languages %}
+                        {{ language }}
+                    {% endfor %}</td>
+                <td>Add</td>
+                <td>Message</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
